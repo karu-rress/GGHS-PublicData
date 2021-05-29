@@ -25,9 +25,9 @@ class otd:
     @staticmethod
     def sort_dict(dict: Dict, is_ascending: bool=True) -> Dict:
         if is_ascending:
-            return {k: v for k, v in sorted(dict.items(), key=lambda item:-item[1])}
+            return {k: v for k, v in sorted(dict.items(), key=lambda x: -x[1])}
         else:
-            return {k: v for k, v in sorted(dict.items(), key=lambda item:item[1])}
+            return {k: v for k, v in sorted(dict.items(), key=lambda x: x[1])}
     """
     @staticmethod
     def new_list() -> List:

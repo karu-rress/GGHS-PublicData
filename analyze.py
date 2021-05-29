@@ -7,41 +7,56 @@ from matplotlib import pyplot as plt
 class analyzer:
 
     def __init__(self, filename: str='data.csv') -> None:
-        self.file = open(filename, 'r', encoding = 'UTF-8')
-        self.data = csv.reader(self.file)
-        self.header = next(self.data)
-        self.result: List = [] # 데이터 저장용 리스트
-        plt.rc('font', family='Malgun Gothic')
+        self._file = open(filename, 'r', encoding = 'UTF-8')
+        self._data = csv.reader(self._file)
+        self._header = next(self._data)
+        self._data = list(self._data)
+
     
     def show_region(self) -> None:
-        regions_data: List = []
-        for i in self.data:
-            regions_data.append(i[0])
-
+        regions_data: List = self.get_data_row(1)
         regions = otd.rm_duplicate(regions_data)
-        counts: List = []
-        for i in regions:
-            counts.append(regions_data.count(i))
+        counts: List = [regions_data.count(it) for it in regions]
         
-        dataDict: Dict = {}
+        result: Dict = {}
         for i in range(len(regions)):
-            dataDict[regions[i]] = counts[i]
-        dataDict = otd.sort_dict(dataDict, False)
+            result[regions[i]] = counts[i]
+        result = otd.sort_dict(result, False)
         
+        plt.rc('font', family='Malgun Gothic')
         plt.figure(figsize=(10, 8))
-        plt.barh(*zip(*dataDict.items()))
+        plt.barh(*zip(*result.items()))
         plt.title('경기도 내 지역별 사교육 시설 현황')
         plt.show()
 
     def show_type(self) -> None:
-        typesList: List = []
-        for i in self.data:
-            typesList.append(i[5])
+        types_data: List = self.get_data_row(6)
+        types = otd.rm_duplicate(types_data) # 중복제거
+        counts: List = [types_data.count(it) for it in types]
+        
+        result: Dict = {}
+        for i in range(len(types)):
+            result[types[i]] = counts[i]
+        result = otd.sort_dict(result, False)
+        
+        plt.rc('font', family='Malgun Gothic')
+        plt.figure(figsize=(10, 8))
+        plt.barh(*zip(*result.items()))
+        plt.title('종류별 사교육 분포도')
+        plt.show()
 
-        typesSet = otd.rm_duplicate(typesList) # 중복제거
-        counts: List = []
-        for i in range(len(typesSet)):
-            pass
+    def test_func(self):
+        types_data: List = []
+        for i in self._data:
+            tp, *_ = i[3 - 1].split('(')
+            types_data.append(tp)
+
+        types = otd.rm_duplicate(types_data) # 중복제거
+        print(types)
+        
+    # starts with '1'
+    def get_data_row(self, row: int) -> List:
+        return [lt[row - 1] for lt in self._data]
 
     def __del__(self):
-        self.file.close()
+        self._file.close()
