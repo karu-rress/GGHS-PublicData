@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 class analyzer:
 
     def __init__(self, filename: str='data.csv') -> None:
-        self._file = open(filename, 'r', encoding = 'UTF-8')
+        self._file = open(filename, 'r', encoding='UTF-8')
         self._data = csv.reader(self._file)
         self._header = next(self._data)
         self._data = list(self._data)
@@ -48,11 +48,35 @@ class analyzer:
     def test_func(self):
         types_data: List = []
         for i in self._data:
-            tp, *_ = i[3 - 1].split('(')
+            tp, *_ = i[6 - 1].split('(')
             types_data.append(tp)
 
         types = otd.rm_duplicate(types_data) # 중복제거
-        print(types)
+        subjects = ['국어', '수학', '사회', '과학', '영어']
+        types = [x for x in types 
+        if subjects[0] in x
+        or subjects[1] in x
+        or subjects[2] in x
+        or subjects[3] in x
+        or subjects[4] in x]
+        
+        numbers: List = [0, 0, 0, 0, 0]
+        results: Dict = {}
+        i = 0
+        while i < 5:
+            for type in types:
+                if subjects[i] in type:
+                    numbers[i] += 1
+            results[subjects[i]] = numbers[i]
+            i += 1
+            
+        otd.sort_dict(results, False)
+
+        plt.rc('font', family='Malgun Gothic')
+        plt.figure(figsize=(10, 8))
+        plt.barh(*zip(*results.items()))
+        plt.title('과목별 학원 수')
+        plt.show()
         
     # starts with '1'
     def get_data_row(self, row: int) -> List:
