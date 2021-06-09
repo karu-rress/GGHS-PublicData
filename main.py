@@ -2,4 +2,5 @@ from analyze import analyzer
 
 service = analyzer()
 service.show_region()
-service.test_func()
+service.show_type()
+service.scatter()
