@@ -1,11 +1,9 @@
 import csv
 from basiclib import otd
-from typing import List, Dict
 from collections import Counter
 from matplotlib import pyplot as plt
 
 class analyzer:
-
     def __init__(self, filename: str='data.csv') -> None:
         self._file = open(filename, 'r', encoding='UTF-8')
         self._data = csv.reader(self._file)
@@ -17,11 +15,11 @@ class analyzer:
         return self._data
 
     def show_region(self) -> None:
-        regions_data: List = self.get_data_row(1)
+        regions_data: list = self.get_data_row(1)
         regions = otd.rm_duplicate(regions_data)
-        counts: List = [regions_data.count(it) for it in regions]
+        counts = [regions_data.count(it) for it in regions]
         
-        result: Dict = {}
+        result = {}
         for i in range(len(regions)):
             result[regions[i]] = counts[i]
         result = otd.sort_dict(result, False)
@@ -36,7 +34,7 @@ class analyzer:
         plt.close()
 
     def show_type(self) -> None:
-        types_data: List = []
+        types_data = []
         for i in self.data:
             tp, *_ = i[6 - 1].split('(')
             types_data.append(tp)
@@ -51,8 +49,8 @@ class analyzer:
         or subjects[4] in x
         or subjects[5] in x]
         
-        numbers: List = [0, 0, 0, 0, 0, 0]
-        results: Dict = {}
+        numbers = [0, 0, 0, 0, 0, 0]
+        results = {}
         
         for i in range(6):
             for type in types:
@@ -71,7 +69,7 @@ class analyzer:
         plt.show()
 
     def test_func(self):
-        types_data: List = []
+        types_data = []
         for i in self.data:
             tp, *_ = i[6 - 1].split('(')
             types_data.append(tp)
@@ -85,8 +83,8 @@ class analyzer:
         or subjects[3] in x
         or subjects[4] in x]
         
-        numbers: List = [0, 0, 0, 0, 0]
-        results: Dict = {}
+        numbers = [0, 0, 0, 0, 0]
+        results = {}
         i = 0
         while i < 5:
             for type in types:
@@ -132,7 +130,7 @@ class analyzer:
         plt.show()
 
     # starts with '1'
-    def get_data_row(self, row: int) -> List:
+    def get_data_row(self, row: int) -> list:
         return [lt[row - 1] for lt in self.data]
 
     def __del__(self):
