@@ -4,7 +4,7 @@ from collections import Counter
 from matplotlib import pyplot as plt
 
 class analyzer:
-    def __init__(self, filename: str='data.csv') -> None:
+    def __init__(self, filename: str='data/data.csv') -> None:
         self._file = open(filename, 'r', encoding='UTF-8')
         self._data = csv.reader(self._file)
         self._header = next(self._data)
